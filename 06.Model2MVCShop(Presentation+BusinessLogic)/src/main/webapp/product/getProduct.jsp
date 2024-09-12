@@ -72,6 +72,7 @@
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
 			<img src = "/images/uploadFiles/../../images/empty.GIF"/>
+			${product.fileName }
 		</td>
 	</tr>
 	<tr>
@@ -138,8 +139,8 @@
 					<img src="/images/ct_btnbg03.gif" width="14" height="23">
 				</td>	
 			</c:if>
-			<c:if test="${!empty user && menu == 'search'}" >
-				<c:if test = "${ empty product.proTranCode || product.proTranCode == '' }">
+			<c:if test="${!empty user && menu eq 'search'}" >
+				<c:if test = '${empty product.proTranCode || product.proTranCode == "" }'>
 				<td width="17" height="23">
 					<img src="/images/ct_btnbg01.gif" width="17" height="23"/>
 				</td>

@@ -62,17 +62,19 @@
 	  	FROM (	SELECT inner_table.* , ROWNUM AS row_seq
 	  					FROM		(	SELECT pro.prod_no AS prod_no , prod_name , price, reg_date, tran_status_code, tran_no 
 											FROM product pro, transaction tran  
-											<if test="searchCondition != null">
-												<where>
-													pro.prod_no = tran.prod_no(+)
+											
+											<where>
+												pro.prod_no = tran.prod_no(+)
+												<if test="searchCondition != null">
 													<if test="searchCondition == 0 and searchKeyword !='' ">
 										 				AND pro.prod_no = #{searchKeyword}
 													</if>
 													<if test="searchCondition == 1 and searchKeyword !='' ">
-										 				AND prod_name = #{searchKeyword}
+									 					AND prod_name = #{searchKeyword}
 													</if>
-												</where>
-											</if>
+												</if>
+											</where>
+										
 											ORDER BY pro.prod_no ) inner_table
 						WHERE ROWNUM &lt;= #{endRowNum} )
 		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum} 
