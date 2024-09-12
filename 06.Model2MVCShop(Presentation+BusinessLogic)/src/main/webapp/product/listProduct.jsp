@@ -131,7 +131,7 @@ function fncGetList(currentPage){
 					<c:if test="${! empty product.proTranCode && product.proTranCode != '' }" >
 						<c:choose>
 							<c:when test = "${product.proTranCode eq '001'}" >
-								구매완료 <a href="/updateTranCodeByProd.do?tranNo=${product.proTranNo}&tranCode=002">배송하기</a>
+								구매완료 <a href="/purchase/updateTranCodeByProd?tranNo=${product.proTranNo}&tranCode=002">배송하기</a>
 							</c:when>
 							<c:when test = "${product.proTranCode eq '002'}" >
 								배송 중
