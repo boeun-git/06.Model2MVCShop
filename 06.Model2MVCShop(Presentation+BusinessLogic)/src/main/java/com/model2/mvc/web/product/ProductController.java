@@ -125,6 +125,8 @@ public class ProductController {
 		}
 		search.setPageSize(pageSize);
 		
+		System.out.println("listProduct : price" + search.getSearchPriceStart());
+		
 		Map<String, Object> map = productService.getProductList(search);
 		
 		Page resultPage = new Page(search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);

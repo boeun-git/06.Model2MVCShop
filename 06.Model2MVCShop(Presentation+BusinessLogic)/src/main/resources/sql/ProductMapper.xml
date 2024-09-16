@@ -32,14 +32,24 @@
 	 <!-- SQL : SELECT ONE -->
 	 <select 	id="getProduct"	parameterType="integer"	resultMap="productSelectMap">
 		SELECT
-		pro.prod_no AS prod_no, prod_name, prod_detail, manufacture_day, price, image_file, reg_date, tran_status_code, tran_no 	
+			pro.prod_no AS prod_no, 
+			prod_name, 
+			prod_detail, 
+			manufacture_day, 
+			price, 
+			image_file, 
+			reg_date, 
+			tran_status_code, 
+			tran_no 	
 		FROM product pro, transaction tran 
 		WHERE pro.prod_no = tran.prod_no(+) AND pro.prod_no = #{value}
 	 </select>
 	 
 	
 	 <select 	id="getProdNo"	resultType="int">
-		SELECT seq_product_prod_no.CURRVAL FROM DUAL
+		SELECT 
+			seq_product_prod_no.CURRVAL 
+		FROM DUAL
 	 </select>
 
 	 
@@ -71,6 +81,9 @@
 													</if>
 													<if test="searchCondition == 1 and searchKeyword !='' ">
 									 					AND prod_name = #{searchKeyword}
+													</if>
+													<if test="searchCondition == 2 and searchKeyword !='' ">
+									 					AND price BETWEEN #{searchPriceStart} AND #{searchPriceEnd} 
 													</if>
 												</if>
 											</where>
@@ -108,6 +121,9 @@
 								<if test="searchCondition == 1 and searchKeyword !='' ">
 						 			prod_name = #{searchKeyword}
 								</if>
+								<if test="searchCondition == 2 and searchKeyword !='' ">
+				 					AND price BETWEEN #{searchPriceStart} AND #{searchPriceEnd} 
+								</if>								
 							</where>
 						</if> ) countTable						
 	 </select>

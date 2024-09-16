@@ -17,6 +17,20 @@ function fncGetList(currentPage){
 	document.detailForm.submit();
 }
 
+function fncHide(){
+	var searchCondition=document.detailForm.searchCondition.value;
+	
+	if (searchCondition == 2){
+		document.detailForm.searchKeyword.type= "hidden";
+		document.detailForm.searchPriceStart.type= "text";
+		document.detailForm.searchPriceEnd.type= "text";		
+	}else{
+		document.detailForm.searchKeyword.type= "text";
+		document.detailForm.searchPriceStart.type= "hidden";
+		document.detailForm.searchPriceEnd.type= "hidden";
+	}
+}
+
 </script>
 </head>
 
@@ -57,13 +71,15 @@ function fncGetList(currentPage){
 	<tr>
 		<!-- 수정 시작 -->
 		<td align="right">
-			<select name="searchCondition" class="ct_input_g" style="width:80px">
+			<select name="searchCondition" class="ct_input_g" style="width:80px"  onchange="fncHide()">
 				<option value="0" ${!empty search.searchCondition && search.searchCondition == "0" ? "selected" : ""}>상품번호</option>
 				<option value="1" ${!empty search.searchCondition && search.searchCondition == "1" ? "selected" : ""}>상품명</option>
 				<option value="2" ${!empty search.searchCondition && search.searchCondition == "2" ? "selected" : ""}>상품가격</option>
 			
 			</select>
 			<input type="text" name="searchKeyword"  class="ct_input_g" style="width:200px; height:19px" value="${search.searchKeyword}" />
+			<input type="hidden" name="searchPriceStart"  style="width:100px; height:19px" value="" /> 
+ 			<input type="hidden" name="searchPriceEnd"   style="width:100px; height:19px" value="" />
 		</td>
 		<!-- 수정 끝-->
 		
@@ -74,7 +90,7 @@ function fncGetList(currentPage){
 						<img src="/images/ct_btnbg01.gif" width="17" height="23">
 					</td>
 					<td background="/images/ct_btnbg02.gif" class="ct_btn01" style="padding-top:3px;">
-						<a href="javascript:fncGetProductList('1', '${menu}');">검색</a>
+						<a href="javascript:fncGetList('1');">검색</a>
 					</td>
 					<td width="14" height="23">
 						<img src="/images/ct_btnbg03.gif" width="14" height="23">
