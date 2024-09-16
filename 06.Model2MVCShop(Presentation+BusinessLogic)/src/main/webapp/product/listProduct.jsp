@@ -119,16 +119,16 @@ function fncGetList(currentPage){
 			<td align="left">${product.regDate}</td>
 			<td></td>
 			<td align="left">
-				<c:if test="${ menu eq 'search'}" >
-					<c:if test="${ ! empty product.proTranCode && product.proTranCode != '' }" >
+				<c:if test="${menu == 'search'}" >
+					<c:if test="${!empty product.proTranNo && product.proTranNo != '' }" >
 						재고없음
 					</c:if>
-					<c:if test="${ empty product.proTranCode || product.proTranCode == '' }" >
+					<c:if test="${empty product.proTranNo || product.proTranNo == '' }" >
 						판매 중
 					</c:if>
 				</c:if>
-				<c:if test="${menu ne 'search'}" >
-					<c:if test="${! empty product.proTranCode && product.proTranCode != '' }" >
+				<c:if test="${menu != 'search'}" >
+					<c:if test="${! empty product.proTranNo && product.proTranNo != '' }" >
 						<c:choose>
 							<c:when test = "${product.proTranCode eq '001'}" >
 								구매완료 <a href="/purchase/updateTranCodeByProd?tranNo=${product.proTranNo}&tranCode=002">배송하기</a>

@@ -140,7 +140,7 @@
 				</td>	
 			</c:if>
 			<c:if test="${!empty user && menu eq 'search'}" >
-				<c:if test = '${empty product.proTranCode || product.proTranCode == "" }'>
+				<c:if test = "${empty product.proTranNo || product.proTranNo == ''}">
 				<td width="17" height="23">
 					<img src="/images/ct_btnbg01.gif" width="17" height="23"/>
 				</td>

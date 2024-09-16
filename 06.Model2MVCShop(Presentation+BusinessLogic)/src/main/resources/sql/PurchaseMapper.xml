@@ -61,8 +61,7 @@
 	   		receiver_phone		= #{receiverPhone:VARCHAR},
 	   		demailaddr			= #{divyAddr:VARCHAR},
 	   		dlvy_request			= #{divyRequest:VARCHAR},
-	   		dlvy_date				= #{divyDate:DATE},
-	   		tran_status_code	= #{tranCode:VARCHAR}
+	   		dlvy_date				= #{divyDate:DATE}
 	   	</set>
 	   	WHERE tran_no = #{tranNo}
 	 </update>
