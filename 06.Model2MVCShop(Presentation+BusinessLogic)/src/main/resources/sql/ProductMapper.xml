@@ -87,9 +87,17 @@
 													</if>
 												</if>
 											</where>
-										
-											ORDER BY pro.prod_no ) inner_table
-						WHERE ROWNUM &lt;= #{endRowNum} )
+											<if test = "searchSorting == 0 ">
+												ORDER BY reg_date DESC 
+											</if>
+											<if test = "searchSorting == 1 ">
+												ORDER BY price 
+											</if>
+											<if test = "searchSorting == 2 ">
+												ORDER BY price  DESC 
+											</if>
+											) inner_table
+						WHERE ROWNUM &lt;= #{endRowNum})
 		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum} 
 	 </select>
 	 
@@ -125,7 +133,7 @@
 				 					AND price BETWEEN #{searchPriceStart} AND #{searchPriceEnd} 
 								</if>								
 							</where>
-						</if> ) countTable						
+						</if>  ) countTable						
 	 </select>
 	 
 </mapper>

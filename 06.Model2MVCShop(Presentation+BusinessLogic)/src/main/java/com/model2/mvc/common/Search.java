@@ -11,6 +11,7 @@ public class Search {
 	
 	private String searchPriceStart;		//가격 범위 검색 추가
 	private String searchPriceEnd;		//가격 범위 검색 추가
+	private String searchSorting;			//정렬 추가
 	
 	private int pageSize;
 	//==> 리스트화면 currentPage에 해당하는 회원정보를 ROWNUM 사용 SELECT 위해 추가된 Field 
@@ -79,12 +80,24 @@ public class Search {
 		this.searchPriceEnd = searchPriceEnd;
 	}
 
+	public String getSearchSorting() {
+		return searchSorting;
+	}
+
+	public void setSearchSorting(String searchSorting) {
+		this.searchSorting = searchSorting;
+	}
+
 	@Override
 	public String toString() {
-		return "Search [currentPage=" + currentPage + ", searchCondition="
-				+ searchCondition + ", searchKeyword=" + searchKeyword
-				+ ", searchPriceStart=" + searchPriceStart+ ", searchPriceEnd=" + searchPriceEnd
-				+ ", pageSize=" + pageSize + ", endRowNum=" + endRowNum
+		return "Search [currentPage=" + currentPage 
+				+ ", searchCondition="+ searchCondition 
+				+ ", searchKeyword=" + searchKeyword
+				+ ", searchPriceStart=" + searchPriceStart
+				+ ", searchPriceEnd=" + searchPriceEnd
+				+ ", searchSorting=" + searchSorting
+				+ ", pageSize=" + pageSize 
+				+ ", endRowNum=" + endRowNum
 				+ ", startRowNum=" + startRowNum + "]";
 	}
 }

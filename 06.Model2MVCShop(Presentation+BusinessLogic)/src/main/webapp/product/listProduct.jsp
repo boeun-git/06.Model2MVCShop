@@ -31,6 +31,13 @@ function fncHide(){
 	}
 }
 
+function fncSort(){
+
+	document.getElementById("currentPage").value = 1;
+	document.detailForm.submit();
+	
+}
+
 </script>
 </head>
 
@@ -71,11 +78,16 @@ function fncHide(){
 	<tr>
 		<!-- 수정 시작 -->
 		<td align="right">
+			<select name="searchSorting" class="ct_input_g" style="width:80px"  onchange="fncSort()">
+				<option value="0" ${!empty search.searchSorting && search.searchSorting == "0" ? "selected" ? empty search.searchSorting : "selected" : ""}>신상품순</option>
+				<option value="1" ${!empty search.searchSorting && search.searchSorting == "1" ? "selected" : ""}>가격 낮은 순</option>
+				<option value="2" ${!empty search.searchSorting && search.searchSorting == "2" ? "selected" : ""}>가격 높은 순</option>
+			</select>
+			
 			<select name="searchCondition" class="ct_input_g" style="width:80px"  onchange="fncHide()">
 				<option value="0" ${!empty search.searchCondition && search.searchCondition == "0" ? "selected" : ""}>상품번호</option>
 				<option value="1" ${!empty search.searchCondition && search.searchCondition == "1" ? "selected" : ""}>상품명</option>
 				<option value="2" ${!empty search.searchCondition && search.searchCondition == "2" ? "selected" : ""}>상품가격</option>
-			
 			</select>
 			<input type="text" name="searchKeyword"  class="ct_input_g" style="width:200px; height:19px" value="${search.searchKeyword}" />
 			<input type="hidden" name="searchPriceStart"  style="width:100px; height:19px" value="" /> 
