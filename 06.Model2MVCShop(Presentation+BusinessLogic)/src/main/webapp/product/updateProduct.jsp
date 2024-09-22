@@ -2,45 +2,64 @@
 <%@ page pageEncoding="EUC-KR"%>
 
 <!-- 상품 정보 수정 페이지 -->
+<!DOCTYPE html>
 <html>
+
 <head>
-<title>상품정보수정</title>
+	<meta charset="EUC-KR">
+	<title>상품정보수정</title>
 
-<link rel="stylesheet" href="/css/admin.css" type="text/css">
-
-<script type="text/javascript" src="../javascript/calendar.js">
-</script>
-
-<script type="text/javascript">
-<!--
-function fncAddProduct(){
-	//Form 유효성 검증
- 	var name = document.detailForm.prodName.value;
-	var detail = document.detailForm.prodDetail.value;
-	var manuDate = document.detailForm.manuDate.value;
-	var price = document.detailForm.price.value;
-
-	if(name == null || name.length<1){
-		alert("상품명은 반드시 입력하여야 합니다.");
-		return;
-	}
-	if(detail == null || detail.length<1){
-		alert("상품상세정보는 반드시 입력하여야 합니다.");
-		return;
-	}
-	if(manuDate == null || manuDate.length<1){
-		alert("제조일자는 반드시 입력하셔야 합니다.");
-		return;
-	}
-	if(price == null || price.length<1){
-		alert("가격은 반드시 입력하셔야 합니다.");
-		return;
-	}
+	<link rel="stylesheet" href="/css/admin.css" type="text/css">
+	
+	<!-- CDN(Content Delivery Network) 호스트 사용 -->
+	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<script type="text/javascript" src="../javascript/calendar.js"></script>
+	<script type="text/javascript">
+	//=====기존Code 주석 처리 후  jQuery 변경 ======//
+	function fncAddProduct(){
+		//Form 유효성 검증
+	 	//var name = document.detailForm.prodName.value;
+		//var detail = document.detailForm.prodDetail.value;
+		//var manuDate = document.detailForm.manuDate.value;
 		
-	document.detailForm.action='/product/updateProduct';
-	document.detailForm.submit();
-}
--->
+		//var price = document.detailForm.price.value;
+		var name = $("input[name='prodName']").val();
+		var detail = $("input[name='prodDetail']").val();
+		var manuDate = $("input[name='manuDate']").val();
+		var price = $("input[name='price']").val();
+		
+		if(name == null || name.length<1){
+			alert("상품명은 반드시 입력하여야 합니다.");
+			return;
+		}
+		if(detail == null || detail.length<1){
+			alert("상품상세정보는 반드시 입력하여야 합니다.");
+			return;
+		}
+		if(manuDate == null || manuDate.length<1){
+			alert("제조일자는 반드시 입력하셔야 합니다.");
+			return;
+		}
+		if(price == null || price.length<1){
+			alert("가격은 반드시 입력하셔야 합니다.");
+			return;
+		}
+			
+		//document.detailForm.action='/product/updateProduct';
+		//document.detailForm.submit();
+		$("form").attr("method" , "POST").attr("action" , "/product/updateProduct").submit();
+	}
+
+	//==> 추가된부분 : "수정"  Event 연결
+	 $(function() {
+		//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+		//==> 1 과 3 방법 조합 : $("tagName.className:filter함수") 사용함.	
+		 $( "td.ct_btn01:contains('수정')" ).on("click" , function() {
+			//Debug..
+			//alert(  $( "td.ct_btn01:contains('수정')" ).html() );
+			fncUpdateUser();
+		});
+	});		
 </script>
 </head>
 

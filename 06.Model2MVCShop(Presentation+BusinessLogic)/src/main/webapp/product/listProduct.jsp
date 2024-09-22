@@ -3,42 +3,92 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!-- 상품목록조회/상품관리 페이지 -->
+<!DOCTYPE html>
 <html>
+
 <head>
-<title>상품 목록조회</title>
+	<meta charset="EUC-KR">
+	<title>상품 목록조회</title>
 
-<link rel="stylesheet" href="/css/admin.css" type="text/css">
+	<link rel="stylesheet" href="/css/admin.css" type="text/css">
 
-<script type="text/javascript">
+	<!-- CDN(Content Delivery Network) 호스트 사용 -->
+	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<script type="text/javascript">
+		
+		//=====기존Code 주석 처리 후  jQuery 변경 ======//
+		// 검색 / page 두가지 경우 모두 Form 전송을 위해 JavaScrpt 이용  
+		function fncGetList(currentPage){
+			//document.getElementById("currentPage").value = currentPage;
+			$("#currentPage").val(currentPage)
+		   	//document.detailForm.submit();
+			$("form").attr("method" , "POST").attr("action" , "/product/listProduct?menu=${menu}").submit();
+		}
+		
+		$(function(){
+			
+				$('#searchCondition').on("change" , function() {
+					//Debug..
+					//alert(  $( ".searchCondition" ).html() );
 
-// 검색 / page 두가지 경우 모두 Form 전송을 위해 JavaScrpt 이용  
-function fncGetList(currentPage){
-	document.getElementById("currentPage").value = currentPage;
-	document.detailForm.submit();
-}
+					var searchCondition=$('#searchCondition').val();
+					
+					if (searchCondition == 2){
+						$("input[name='searchKeyword']").attr("type" , "hidden");
+						$("input[name='searchPriceStart']").attr("type" , "text");
+						$("input[name='searchPriceEnd']").attr("type" , "text");
+			
+					}else{
+						$("input[name='searchKeyword']").attr("type" , "text");
+						$("input[name='searchPriceStart']").attr("type" , "hidden");
+						$("input[name='searchPriceEnd']").attr("type" , "hidden");				
+					}
+					
+				});
+				
+				
+				$('#searchSorting').on("change" , function() {
+					//Debug..
+					//alert(  $( ".searchSorting" ).html() );
 
-function fncHide(){
-	var searchCondition=document.detailForm.searchCondition.value;
-	
-	if (searchCondition == 2){
-		document.detailForm.searchKeyword.type= "hidden";
-		document.detailForm.searchPriceStart.type= "text";
-		document.detailForm.searchPriceEnd.type= "text";		
-	}else{
-		document.detailForm.searchKeyword.type= "text";
-		document.detailForm.searchPriceStart.type= "hidden";
-		document.detailForm.searchPriceEnd.type= "hidden";
-	}
-}
+					//document.getElementById("currentPage").value = 1;
+					//document.detailForm.submit();
+					fncGetList(1);
+				});				
+				 
+				 
+				 $( "td.ct_btn01:contains('검색')" ).on("click" , function() {
+						//Debug..
+						//alert(  $( "td.ct_btn01:contains('검색')" ).html() );
+						fncGetList(1);
+					});
 
-function fncSort(){
+				$( ".ct_list_pop td:nth-child(3)" ).on("click" , function() {
+					//Debug..
+					  var prodNo = $(this).find('input[name="prodNo"]').val();
+					//alert( prodNo );
+					self.location ="/product/getProduct?prodNo="+prodNo+"&menu=${menu}";
+					
+				});
 
-	document.getElementById("currentPage").value = 1;
-	document.detailForm.submit();
-	
-}
+				$( ".ct_list_pop td:nth-child(9):contains('배송하기')" ).on("click" , function() {
+					//Debug..
+					//alert(  $( this ).text().trim() );
+					self.location ="/purchase/updateTranCodeByProd?tranNo=${product.proTranNo}&tranCode=002";
+					
+				});	
+				
+				//==> UI 수정 추가부분  :  userId LINK Event End User 에게 보일수 있도록 
+				$( ".ct_list_pop td:nth-child(3)" ).css("color" , "red");
+				
+				
+				//==> 아래와 같이 정의한 이유는 ??
+				//==> 아래의 주석을 하나씩 풀어 가며 이해하세요.					
+				$(".ct_list_pop:nth-child(4n+6)" ).css("background-color" , "whitesmoke");			
+		});
 
-</script>
+		
+	</script>
 </head>
 
 <body bgcolor="#ffffff" text="#000000">
@@ -78,20 +128,25 @@ function fncSort(){
 	<tr>
 		<!-- 수정 시작 -->
 		<td align="right">
+			<!-- ////////////////// jQuery Event 처리로 변경됨 /////////////////////////
 			<select name="searchSorting" class="ct_input_g" style="width:80px"  onchange="fncSort()">
+			////////////////////////////////////////////////////////////////////////////////////////////////// -->
+			<select id = "searchSorting" name="searchSorting" class="ct_input_g" style="width:80px" >
 				<option value="0" ${!empty search.searchSorting && search.searchSorting == "0" ? "selected" ? empty search.searchSorting : "selected" : ""}>신상품순</option>
 				<option value="1" ${!empty search.searchSorting && search.searchSorting == "1" ? "selected" : ""}>가격 낮은 순</option>
 				<option value="2" ${!empty search.searchSorting && search.searchSorting == "2" ? "selected" : ""}>가격 높은 순</option>
 			</select>
-			
+			<!-- ////////////////// jQuery Event 처리로 변경됨 /////////////////////////
 			<select name="searchCondition" class="ct_input_g" style="width:80px"  onchange="fncHide()">
+			////////////////////////////////////////////////////////////////////////////////////////////////// -->
+			<select id = "searchCondition" name="searchCondition" class="ct_input_g" style="width:80px" >
 				<option value="0" ${!empty search.searchCondition && search.searchCondition == "0" ? "selected" : ""}>상품번호</option>
 				<option value="1" ${!empty search.searchCondition && search.searchCondition == "1" ? "selected" : ""}>상품명</option>
 				<option value="2" ${!empty search.searchCondition && search.searchCondition == "2" ? "selected" : ""}>상품가격</option>
 			</select>
-			<input type="text" name="searchKeyword"  class="ct_input_g" style="width:200px; height:19px" value="${search.searchKeyword}" />
-			<input type="hidden" name="searchPriceStart"  style="width:100px; height:19px" value="" /> 
- 			<input type="hidden" name="searchPriceEnd"   style="width:100px; height:19px" value="" />
+			<input type="text" id = "searchKeyword" name="searchKeyword"  class="ct_input_g" style="width:200px; height:19px" value="${search.searchKeyword}" />
+			<input type="hidden" id="searchPriceStart" name="searchPriceStart"  style="width:100px; height:19px" value="" /> 
+ 			<input type="hidden" id="searchPriceEnd" name="searchPriceEnd"   style="width:100px; height:19px" value="" />
 		</td>
 		<!-- 수정 끝-->
 		
@@ -102,7 +157,10 @@ function fncSort(){
 						<img src="/images/ct_btnbg01.gif" width="17" height="23">
 					</td>
 					<td background="/images/ct_btnbg02.gif" class="ct_btn01" style="padding-top:3px;">
+						<!-- ////////////////// jQuery Event 처리로 변경됨 /////////////////////////
 						<a href="javascript:fncGetList('1');">검색</a>
+						////////////////////////////////////////////////////////////////////////////////////////////////// -->
+						검색
 					</td>
 					<td width="14" height="23">
 						<img src="/images/ct_btnbg03.gif" width="14" height="23">
@@ -140,7 +198,14 @@ function fncSort(){
 		<tr class="ct_list_pop">
 			<td align="center">${i }</td>
 			<td></td>
-			<td align="left"><a href="/product/getProduct?prodNo=${product.prodNo}&menu=${menu}">${product.prodName}</a></td>
+			<td align="left">
+				<!-- ////////////////// jQuery Event 처리로 변경됨 /////////////////////////
+				<a href="/product/getProduct?prodNo=${product.prodNo}&menu=${menu}">${product.prodName}</a></td>
+				////////////////////////////////////////////////////////////////////////////////////////////////// -->
+				${product.prodName}
+				<input type="hidden" name = "prodNo" value = "${product.prodNo}" />
+				
+			</td>
 			<td></td>
 			<td align="left">${product.price}</td>
 			<td></td>
@@ -159,7 +224,12 @@ function fncSort(){
 					<c:if test="${! empty product.proTranNo && product.proTranNo != '' }" >
 						<c:choose>
 							<c:when test = "${product.proTranCode eq '001'}" >
-								구매완료 <a href="/purchase/updateTranCodeByProd?tranNo=${product.proTranNo}&tranCode=002">배송하기</a>
+								구매완료<br/>
+								 <!-- ////////////////// jQuery Event 처리로 변경됨 /////////////////////////
+								<a href="/purchase/updateTranCodeByProd?tranNo=${product.proTranNo}&tranCode=002">배송하기</a>
+								////////////////////////////////////////////////////////////////////////////////////////////////// -->
+								배송하기
+								<input type="hidden" name="proTranNo" value="${product.proTranNo}"/>
 							</c:when>
 							<c:when test = "${product.proTranCode eq '002'}" >
 								배송 중

@@ -1,29 +1,74 @@
 <%@ page contentType="text/html; charset=euc-kr" %>
 <%@ page pageEncoding="EUC-KR"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
-
-
+<!DOCTYPE html>
 <html>
+
 <head>
-<title>구매 목록조회</title>
+	<meta charset="EUC-KR">
+	<title>구매 목록조회</title>
 
-<link rel="stylesheet" href="/css/admin.css" type="text/css">
+	<link rel="stylesheet" href="/css/admin.css" type="text/css">
+	<!-- CDN(Content Delivery Network) 호스트 사용 -->
+	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<script type="text/javascript">
+	
+		function fncGetList(currentPage) {
 
-<script type="text/javascript">
-	function fncGetList(currentPage) {
+			//document.getElementById("currentPage").value = currentPage;
+			//document.detailForm.submit();
+			$("#currentPage").val(currentPage);
+			$("form").attr("method" , "POST").attr("action" , "/purchase/listPurchase").submit();
+		}
+	
+		$(function(){
+			
 
-		document.getElementById("currentPage").value = currentPage;
-		document.detailForm.submit();
-	}
-</script>
+			$( ".ct_list_pop td:nth-child(1)" ).on("click" , function() {
+				//Debug..
+				  var tranNo = $(this).find('input[name="tranNo"]').val();
+				//alert( tranNo  );
+				self.location ="/purchase/getPurchase?tranNo="+tranNo;
+				
+			});
+			
+			$( ".ct_list_pop td:nth-child(3)" ).on("click" , function() {
+				//Debug..
+				  var prodNo = $(this).find('input[name="prodNo"]').val();
+				//alert( tranNo  );
+				self.location ="/product/getProduct?prodNo="+prodNo+"&menu=search";
+				
+			});			
+
+			$( ".ct_list_pop td:nth-child(11):contains('물건도착')" ).on("click" , function() {
+				//Debug..
+				
+				var tranNo = $(this).find('input[name="tranNo"]').val();
+				alert(  tranNo );
+				self.location ="/purchase/updateTranCode?tranNo="+tranNo+"&tranCode=003";
+				
+			});	
+			
+			//==> UI 수정 추가부분  :  userId LINK Event End User 에게 보일수 있도록 
+			$( ".ct_list_pop td:nth-child(3)" ).css("color" , "red");
+			
+			
+			//==> 아래와 같이 정의한 이유는 ??
+			//==> 아래의 주석을 하나씩 풀어 가며 이해하세요.					
+			$(".ct_list_pop:nth-child(4n+6)" ).css("background-color" , "whitesmoke");			
+	});
+	
+	</script>
 </head>
 
 <body bgcolor="#ffffff" text="#000000">
 
 <div style="width: 98%; margin-left: 10px;">
 
+<!-- ////////////////// jQuery Event 처리로 변경됨 /////////////////////////
 <form name="detailForm" action="/purchase/listPurchase" method="post">
+////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<form name="detailForm">
 
 <table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
 	<tr>
@@ -66,12 +111,20 @@
 	<tr class="ct_list_pop">
 		<td align="center">
 			<!-- 수정 -->
+			<!-- ////////////////// jQuery Event 처리로 변경됨 /////////////////////////
 			<a href="/purchase/getPurchase?tranNo=${purchase.tranNo}">${i} </a>
+			////////////////////////////////////////////////////////////////////////////////////////////////// -->
+			${i}
+			<input type="hidden" name = "tranNo" id="tranNo" value="${purchase.tranNo}" />
 		</td>
 		<td></td>
 		<td align="left">
 			<!-- 수정 -->
+			<!-- ////////////////// jQuery Event 처리로 변경됨 /////////////////////////
 			<a href="/product/getProduct?prodNo=${purchase.purchaseProd.prodNo}&menu=search">${purchase.purchaseProd.prodName}</a>
+			////////////////////////////////////////////////////////////////////////////////////////////////// -->
+			${purchase.purchaseProd.prodName}
+			<input type="hidden" name = "prodNo" id="prodNo" value="${purchase.purchaseProd.prodNo}" />
 		</td>
 		<td></td>
 		<!-- 수정 -->
@@ -87,7 +140,10 @@
 		<td></td>
 		<td align="left">
 			<c:if test = "${purchase.tranCode =='002'}">
+			<!-- ////////////////// jQuery Event 처리로 변경됨 /////////////////////////
 			<a href="/purchase/updateTranCode?tranNo=${purchase.tranNo}&tranCode=003">물건도착</a>
+			////////////////////////////////////////////////////////////////////////////////////////////////// -->
+			물건도착
 			</c:if>
 		</td>
 	</tr>	
