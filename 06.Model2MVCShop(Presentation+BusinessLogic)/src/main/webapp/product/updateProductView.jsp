@@ -170,7 +170,7 @@
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
 			<!-- ¼öÁ¤ -->
-			<input	type="file" name="fileName" class="ct_input_g" 
+			<input	type="file" name="file" class="ct_input_g" 
 						style="width: 200px; height: 19px" maxLength="13" value="${product.fileName}"/>
 		</td>
 	</tr>

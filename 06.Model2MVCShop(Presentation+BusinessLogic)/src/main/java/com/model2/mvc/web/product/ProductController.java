@@ -1,16 +1,12 @@
 package com.model2.mvc.web.product;
 
 import java.io.File;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.model2.mvc.common.Page;
@@ -65,6 +62,7 @@ public class ProductController {
 	@RequestMapping(value = "addProduct", method = RequestMethod.POST)
 	public String addProduct(@ModelAttribute("product") Product product,
 											//@RequestParam("fileName") MultipartFile file,
+											@RequestPart("file") MultipartFile file,
 											HttpServletRequest request) throws Exception {
 
 		System.out.println("/product/addProduct : POST");
@@ -75,32 +73,13 @@ public class ProductController {
 		return "forward:/product/addProduct.jsp";*/
 		String dir = "C:\\repository\\06.Model2MVCShop\\06.Model2MVCShop(Presentation+BusinessLogic)\\src\\main\\webapp\\images\\uploadFiles\\";
 		System.out.println(product);
-		
-//		if(file.isEmpty()) {
-//			System.out.println("파일 없음");			
-//			product.setManuDate(product.getManuDate().replaceAll("-", ""));		
-//			productService.addProduct(product);			
-//			return "forward:/product/addProduct.jsp";			
-//		}
-		
-		if(ServletFileUpload.isMultipartContent(request)) {
-			List<FileItem> fileItemList = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
 			
-			for(int i =0; i<fileItemList.size(); i++) {
-				FileItem fileItem = (FileItem) fileItemList.get(i);
-				
-				if(!fileItem.isFormField()) {
-					File uploadedFile = new File(dir, fileItem.getName());
-					fileItem.write(uploadedFile);
-				}
-			}
-			
-		}else {
-			System.out.println("인코딩 타입이 multipart/form-data가 이닙니다.");
+		if (!file.isEmpty()) {
+			File uploadFile = new File(dir, file.getOriginalFilename());
+			Thread.sleep(2000);
+			file.transferTo(uploadFile);
+			product.setFileName(file.getOriginalFilename());
 		}
-		
-		//File uploadedFile = new File(dir, file.getName());
-		//file.transferTo(uploadedFile);
 		
 		product.setManuDate(product.getManuDate().replaceAll("-", ""));
 		productService.addProduct(product);		
@@ -183,12 +162,25 @@ public class ProductController {
 	
 	//@RequestMapping("/updateProduct.do")
 	@RequestMapping(value = "updateProduct", method = RequestMethod.POST)
-	public String updateProduct(@ModelAttribute("product") Product product, Model model) throws Exception {
+	public String updateProduct(@ModelAttribute("product") Product product, 
+												@RequestPart("file") MultipartFile file,
+												Model model) throws Exception {
 		
 		System.out.println("/product/updateProduct : POST");
 		
-		productService.updateProduct(product);
+//		productService.updateProduct(product);
+//		model.addAttribute("product", product);
 		
+		String dir = "C:\\repository\\06.Model2MVCShop\\06.Model2MVCShop(Presentation+BusinessLogic)\\src\\main\\webapp\\images\\uploadFiles\\";
+		System.out.println(product);
+			
+		if (!file.isEmpty()) {
+			File uploadFile = new File(dir, file.getOriginalFilename());
+			file.transferTo(uploadFile);
+			product.setFileName(file.getOriginalFilename());
+		}
+		product.setManuDate(product.getManuDate().replaceAll("-", ""));
+		productService.updateProduct(product);
 		model.addAttribute("product", product);
 		
 		return "redirect:/product/getProduct?prodNo="+product.getProdNo()+"&menu=ok";
