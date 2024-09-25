@@ -66,15 +66,90 @@
 				$( ".ct_list_pop td:nth-child(3)" ).on("click" , function() {
 					//Debug..
 					  var prodNo = $(this).find('input[name="prodNo"]').val();
-					//alert( prodNo );
-					self.location ="/product/getProduct?prodNo="+prodNo+"&menu=${menu}";
 					
-				});
+					//////////////////////////// 추가 , 변경된 부분 ///////////////////////////////////
+					//self.location ="/product/getProduct?prodNo="+prodNo+"&menu=${menu}";
+					////////////////////////////////////////////////////////////////////////////////////////////  
+					
+					if(${user != null && user.role == 'user'}){
+						$.ajax( 
+								{
+									url : "/product/json/getProduct/"+prodNo ,
+									method : "GET" ,
+									dataType : "json" ,
+									headers : {
+										"Accept" : "application/json",
+										"Content-Type" : "application/json"
+									},
+									success : function(JSONData , status) {
 
+										//Debug...
+										//alert(status);
+										//Debug...
+										//alert("JSONData : \n"+JSONData);
+										
+										var displayValue = "<h3>"
+																	+"상품명 : "+JSONData.prodName+"<br/>"
+																	+"상품상세정보 : "+JSONData.prodDetail+"<br/>"
+																	+"제조일자 : "+JSONData.manuDate+"<br/>"
+																	+"가격 : "+JSONData.price+"<br/>"
+																	+"등록일 : "+JSONData.regDate+"<br/>"
+																	+"</h3>";
+										//Debug...									
+										//alert(displayValue);
+										$("h3").remove();
+										$( "#"+prodNo+"" ).html(displayValue);
+									}
+							});
+
+					}
+				});
+				$( ".ct_list_pop td:nth-child(3)" ).on("click" , function() {
+					//Debug..
+					  var prodNo = $(this).find('input[name="prodNo"]').val();
+					
+					//////////////////////////// 추가 , 변경된 부분 ///////////////////////////////////
+					self.location ="/product/getProduct?prodNo="+prodNo+"&menu=${menu}";
+					////////////////////////////////////////////////////////////////////////////////////////////  
+				/*	
+					if(${user != null && user.role == 'user'}){
+						$.ajax( 
+								{
+									url : "/product/json/getProduct/"+prodNo ,
+									method : "GET" ,
+									dataType : "json" ,
+									headers : {
+										"Accept" : "application/json",
+										"Content-Type" : "application/json"
+									},
+									success : function(JSONData , status) {
+
+										//Debug...
+										//alert(status);
+										//Debug...
+										//alert("JSONData : \n"+JSONData);
+										
+										var displayValue = "<h3>"
+																	+"상품명 : "+JSONData.prodName+"<br/>"
+																	+"상품상세정보 : "+JSONData.prodDetail+"<br/>"
+																	+"제조일자 : "+JSONData.manuDate+"<br/>"
+																	+"가격 : "+JSONData.price+"<br/>"
+																	+"등록일 : "+JSONData.regDate+"<br/>"
+																	+"</h3>";
+										//Debug...									
+										//alert(displayValue);
+										$("h3").remove();
+										$( "#"+prodNo+"" ).html(displayValue);
+									}
+							});
+
+					}*/
+				});
 				$( ".ct_list_pop td:nth-child(9):contains('배송하기')" ).on("click" , function() {
 					//Debug..
 					//alert(  $( this ).text().trim() );
-					self.location ="/purchase/updateTranCodeByProd?tranNo=${product.proTranNo}&tranCode=002";
+					var proTranNo = $(this).find('input[name="proTranNo"]').val();
+					self.location ="/purchase/updateTranCodeByProd?tranNo="+proTranNo+"&tranCode=002";
 					
 				});	
 				
@@ -246,7 +321,10 @@
 			</td>	
 		</tr>
 		<tr>
+			<!-- //////////////////////////// 추가 , 변경된 부분 /////////////////////////////
 			<td colspan="11" bgcolor="D6D7D6" height="1"></td>
+			////////////////////////////////////////////////////////////////////////////////////////////  -->
+			<td id="${product.prodNo}" colspan="11" bgcolor="D6D7D6" height="1"></td>
 		</tr>	
 			
 	</c:forEach>

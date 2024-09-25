@@ -43,8 +43,8 @@
 			$( ".ct_list_pop td:nth-child(11):contains('¹°°ÇµµÂø')" ).on("click" , function() {
 				//Debug..
 				
-				var tranNo = $(this).find('input[name="tranNo"]').val();
-				alert(  tranNo );
+				var tranNo = $( this ).parent().children().find('input[name="tranNo"]').val();
+				//alert(  tranNo );
 				self.location ="/purchase/updateTranCode?tranNo="+tranNo+"&tranCode=003";
 				
 			});	
