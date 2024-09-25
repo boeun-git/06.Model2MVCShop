@@ -35,8 +35,7 @@ public class ProductRestController {
 	@RequestMapping( value="json/getProduct/{prodNo}", method=RequestMethod.GET )
 	public Product getProduct( @PathVariable int prodNo) throws Exception {
 
-		System.out.println("/product/getProduct : GET");
-
+		System.out.println("RestController : /product/getProduct : GET");
 		return productService.getProduct(prodNo);	
 		
 	}
@@ -45,22 +44,29 @@ public class ProductRestController {
 	//@RequestMapping("listProduct")
 	@RequestMapping( value="json/listProduct", method=RequestMethod.POST )
 	public Map<String, Object> listProduct(@RequestBody  Search search) throws Exception {
-		System.out.println("/product/listProduct");
+		System.out.println("RestController : /product/listProduct");
 		
 		if(search.getCurrentPage() == 0) {
 			search.setCurrentPage(1);
 		}
-		
-		System.out.println("listProduct : price" + search.getPageSize());
 		
 		return productService.getProductList(search);
 	}
 	
 	@RequestMapping( value="json/addProduct", method=RequestMethod.POST )
 	public Product addProduct(@RequestBody  Product product) throws Exception{
-		System.out.println("/product/addProduct");
 		
-		productService.addProduct(product);
+		System.out.println("RestController : /product/addProduct : POST");
+		
+		return productService.getProduct(productService.addProduct(product));
+	}
+	
+	@RequestMapping(value="json/updateProduct", method = RequestMethod.POST)
+	public Product updateProduct(@RequestBody Product product) throws Exception{
+
+		System.out.println("RestController : /product/updateProduct : POST");
+		
+		productService.updateProduct(product);
 		
 		return productService.getProduct(product.getProdNo());
 	}
