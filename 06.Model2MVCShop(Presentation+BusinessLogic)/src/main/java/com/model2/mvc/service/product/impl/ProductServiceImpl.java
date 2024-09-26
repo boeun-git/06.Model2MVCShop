@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.model2.mvc.common.Search;
 import com.model2.mvc.service.domain.Product;
-import com.model2.mvc.service.domain.User;
 import com.model2.mvc.service.product.ProductDao;
 import com.model2.mvc.service.product.ProductService;
 
@@ -66,6 +65,12 @@ public class ProductServiceImpl implements ProductService {
 		// TODO Auto-generated method stub
 		productDao.updateProduct(product);
 		
+	}
+	
+	public List<String> getAutocomplete(String prodName) throws Exception{
+		List<String> list = productDao.getAutocomplete("%"+prodName+"%");
+		
+		return list;
 	}
 
 }

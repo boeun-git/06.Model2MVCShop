@@ -29,4 +29,6 @@ public interface ProductDao {
 	//게시판 Page 처리를 위한 전체 Row(totalCount) return
 	public int getTotalCount(Search search)  throws Exception ;
 	
+	public List<String> getAutocomplete(String prodName) throws Exception;
+	
 }

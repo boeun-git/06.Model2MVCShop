@@ -1,5 +1,6 @@
 package com.model2.mvc.web.product;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,6 +70,20 @@ public class ProductRestController {
 		productService.updateProduct(product);
 		
 		return productService.getProduct(product.getProdNo());
+	}
+	
+	
+	
+	
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	@RequestMapping(value="json/getProductAutocomplete/{prodName}", method = RequestMethod.GET)
+	public List<String> getProductAutocomplete(@PathVariable String prodName) throws Exception{
+
+		System.out.println("RestController : /product/getProductAutocomplete : GET");
+		
+		return productService.getAutocomplete(prodName);
 	}
 
 }

@@ -12,8 +12,12 @@
 
 	<link rel="stylesheet" href="/css/admin.css" type="text/css">
 
-	<!-- CDN(Content Delivery Network) 호스트 사용 -->
-	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<!-- CDN(Content Delivery Network) 호스트 사용 <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>-->
+	
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+  	<script src="https://code.jquery.com/ui/1.14.0/jquery-ui.js"></script>
+	
 	<script type="text/javascript">
 		
 		//=====기존Code 주석 처리 후  jQuery 변경 ======//
@@ -68,51 +72,16 @@
 					  var prodNo = $(this).find('input[name="prodNo"]').val();
 					
 					//////////////////////////// 추가 , 변경된 부분 ///////////////////////////////////
-					//self.location ="/product/getProduct?prodNo="+prodNo+"&menu=${menu}";
-					////////////////////////////////////////////////////////////////////////////////////////////  
-					
-					if(${user != null && user.role == 'user'}){
-						$.ajax( 
-								{
-									url : "/product/json/getProduct/"+prodNo ,
-									method : "GET" ,
-									dataType : "json" ,
-									headers : {
-										"Accept" : "application/json",
-										"Content-Type" : "application/json"
-									},
-									success : function(JSONData , status) {
-
-										//Debug...
-										//alert(status);
-										//Debug...
-										//alert("JSONData : \n"+JSONData);
-										
-										var displayValue = "<h3>"
-																	+"상품명 : "+JSONData.prodName+"<br/>"
-																	+"상품상세정보 : "+JSONData.prodDetail+"<br/>"
-																	+"제조일자 : "+JSONData.manuDate+"<br/>"
-																	+"가격 : "+JSONData.price+"<br/>"
-																	+"등록일 : "+JSONData.regDate+"<br/>"
-																	+"</h3>";
-										//Debug...									
-										//alert(displayValue);
-										$("h3").remove();
-										$( "#"+prodNo+"" ).html(displayValue);
-									}
-							});
-
-					}
-				});
-				$( ".ct_list_pop td:nth-child(3)" ).on("click" , function() {
-					//Debug..
-					  var prodNo = $(this).find('input[name="prodNo"]').val();
-					
-					//////////////////////////// 추가 , 변경된 부분 ///////////////////////////////////
 					self.location ="/product/getProduct?prodNo="+prodNo+"&menu=${menu}";
 					////////////////////////////////////////////////////////////////////////////////////////////  
-				/*	
-					if(${user != null && user.role == 'user'}){
+					
+				});
+				
+				
+				$( ".ct_list_pop td:nth-child(11)" ).on("click" , function() {
+					//Debug..
+					  var prodNo = $(this).parent().children().find('input[name="prodNo"]').val();
+					
 						$.ajax( 
 								{
 									url : "/product/json/getProduct/"+prodNo ,
@@ -142,9 +111,9 @@
 										$( "#"+prodNo+"" ).html(displayValue);
 									}
 							});
-
-					}*/
 				});
+				
+				
 				$( ".ct_list_pop td:nth-child(9):contains('배송하기')" ).on("click" , function() {
 					//Debug..
 					//alert(  $( this ).text().trim() );
@@ -159,9 +128,33 @@
 				
 				//==> 아래와 같이 정의한 이유는 ??
 				//==> 아래의 주석을 하나씩 풀어 가며 이해하세요.					
-				$(".ct_list_pop:nth-child(4n+6)" ).css("background-color" , "whitesmoke");			
-		});
+				$(".ct_list_pop:nth-child(4n+6)" ).css("background-color" , "whitesmoke");		
+				
 
+				
+				
+				
+				/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+				$("#searchKeyword").autocomplete({
+			        source: function(request, response) {
+					
+						if ($("#searchCondition").val() == "1"){
+							$.ajax({
+								url : "/product/json/getProductAutocomplete/"+ encodeURIComponent(request.term),
+								method : "GET" ,
+								dataType: "json",
+								success : function(JSONData) {
+			   
+								    response(JSONData);
+								}
+							});
+						}	
+					}	
+				});
+				
+				
+				
+		});
 		
 	</script>
 </head>
@@ -262,6 +255,8 @@
 		<td class="ct_list_b">등록일</td>	
 		<td class="ct_line02"></td>
 		<td class="ct_list_b">현재상태</td>	
+		<td class="ct_line02"></td>
+		<td class="ct_list_b">미리보기</td>
 	</tr>
 	<tr>
 		<td colspan="11" bgcolor="808285" height="1"></td>
@@ -319,6 +314,8 @@
 					</c:if>
 				</c:if>
 			</td>	
+			<td></td>
+			<td>메롱</td>
 		</tr>
 		<tr>
 			<!-- //////////////////////////// 추가 , 변경된 부분 /////////////////////////////
@@ -329,6 +326,9 @@
 			
 	</c:forEach>
 	<!-- 수정 끝 -->
+	<tr>
+	<td id="auto"></td>
+	</tr>
 </table>
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top:10px;">
@@ -348,3 +348,8 @@
 </div>
 </body>
 </html>
+
+
+
+
+

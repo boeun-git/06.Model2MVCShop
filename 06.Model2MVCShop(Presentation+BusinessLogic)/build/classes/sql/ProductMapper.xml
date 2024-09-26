@@ -136,4 +136,12 @@
 						</if>  ) countTable						
 	 </select>
 	 
+	 
+	 <select id="getAutocomplete" parameterType = "String" resultType ="String">
+	 SELECT
+	 	prod_name
+	 FROM product
+	 WHERE prod_name LIKE #{value}
+	 </select>
+	 
 </mapper>
